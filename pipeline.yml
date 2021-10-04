@@ -1,8 +1,9 @@
 resource_types:
-- name: pull-request
-  type: docker-image
-  source:
-    repository: prashant887/concourse-pr-event
+  - name: pull-request
+    type: docker-image
+    source:
+      repository: ndrjng/concourse-github-pr-comment-resource
+      #tag: latest
 
 resources:
 - name: pull-request
@@ -11,7 +12,7 @@ resources:
   #webhook_token: ((webhook-token))
   source:
     repository: prashant887/concourse-pr-event
-    #access_token: ((github-access-token))
+    access_token: ((github-access-token))
     #branch: master
 
 jobs:
