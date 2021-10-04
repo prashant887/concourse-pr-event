@@ -20,6 +20,10 @@ jobs:
   - get: pull-request
     trigger: true
     version: every
+  - put: pull-request
+    params:
+      path: pull-request
+      status: pending
   - task: unit-test
     config:
       platform: linux
@@ -36,3 +40,12 @@ jobs:
             cd pull-request
             git log --graph --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s" > log.txt
             cat log.txt
+    on_failure:
+      put: pull-request
+      params:
+        path: pull-request
+        status: failure
+  - put: pull-request
+    params:
+      path: pull-request
+      status: success
