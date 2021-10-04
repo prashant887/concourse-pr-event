@@ -20,7 +20,7 @@ jobs:
   plan:
   - get: pull-request
     trigger: true
-    version: every
+    #version: every
   - task: unit-test
     config:
       platform: linux
