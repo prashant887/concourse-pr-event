@@ -1,9 +1,8 @@
 resource_types:
-  - name: pull-request
-    type: docker-image
-    source:
-      repository: prashant887/concourse-pr-event
-      #tag: latest
+- name: pull-request
+  type: docker-image
+  source:
+    repository: teliaoss/github-pr-resource
 
 resources:
 - name: pull-request
@@ -20,7 +19,7 @@ jobs:
   plan:
   - get: pull-request
     trigger: true
-    #version: every
+    version: every
   - task: unit-test
     config:
       platform: linux
@@ -30,10 +29,5 @@ jobs:
       inputs:
         - name: pull-request
       run:
-        path: /bin/sh
-        args:
-          - -xce
-          - |
-            cd pull-request
-            git log --graph --all --color --pretty=format:"%x1b[31m%h%x09%x1b[32m%d%x1b[0m%x20%s" > log.txt
-            cat log.txt
+        path: echo
+        args: [hello]
