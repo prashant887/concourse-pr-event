@@ -2,7 +2,7 @@ resource_types:
   - name: pull-request
     type: docker-image
     source:
-      repository: ndrjng/concourse-github-pr-comment-resource
+      repository: prashant887/concourse-pr-event
       #tag: latest
 
 resources:
@@ -20,7 +20,7 @@ jobs:
   plan:
   - get: pull-request
     trigger: true
-    version: every
+    #version: every
   - task: unit-test
     config:
       platform: linux
