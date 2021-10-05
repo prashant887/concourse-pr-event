@@ -30,7 +30,7 @@ jobs:
       image_resource:
         type: docker-image
         source:
-          repository: alpine
+          repository: python
           #tag: 3.6.3-jdk-11
       inputs:
       - name: concourse-pr-event
@@ -43,7 +43,7 @@ jobs:
        args:
        - -exec
        - |
-          sleep 20s
+          python -m test.testCalac
   on_success:
     do:
     - put: concourse-pr-event
