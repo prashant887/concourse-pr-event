@@ -9,7 +9,7 @@ resource_types:
 resources:
 - name: concourse-pr-event
   type: pull-request
-  check_every: 10s
+  check_every: 30s
   source:
     repository: prashant887/concourse-pr-event
     access_token: ((github-access-token))
@@ -44,6 +44,7 @@ jobs:
        - -exec
        - |
           sleep 20s
+          go hello
   on_success:
     do:
     - put: concourse-pr-event
