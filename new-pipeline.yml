@@ -44,7 +44,6 @@ jobs:
        - -exec
        - |
           sleep 20s
-          go hello
   on_success:
     do:
     - put: concourse-pr-event
