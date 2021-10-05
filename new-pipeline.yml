@@ -39,6 +39,7 @@ jobs:
       params:
         branch: master
       run:
+       dir: concourse-pr-event
        path: sh
        args:
        - -exec
