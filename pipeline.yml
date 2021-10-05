@@ -8,11 +8,9 @@ resources:
 - name: pull-request
   type: pull-request
   check_every: 2m
-  #webhook_token: ((webhook-token))
   source:
     repository: prashant887/concourse-pr-event
     access_token: ((github-access-token))
-    #branch: master
 
 jobs:
 - name: test
@@ -20,6 +18,10 @@ jobs:
   - get: pull-request
     trigger: true
     version: every
+  - put: pull-request
+    params:
+      path: concourse-pr-event
+      status: pending
   - task: unit-test
     config:
       platform: linux
@@ -27,7 +29,25 @@ jobs:
         type: docker-image
         source: {repository: alpine}
       inputs:
-        - name: pull-request
+        - name: concourse-pr-event
+      params:
+        branch: master
       run:
-        path: echo
-        args: [hello]
+        dir: concourse-pr-event
+        path: sh
+        args:
+          - -exec
+          - |
+            sleep 60
+  on_success:
+    do:
+      - put: pull-request
+        params:
+          path: concourse-pr-event
+          status: success
+  on_failure:
+    do:
+      - put: pull-request
+        params:
+          path: concourse-pr-event
+          status: failure
