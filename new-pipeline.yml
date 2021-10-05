@@ -39,7 +39,7 @@ jobs:
       params:
         branch: master
       run:
-       path: bash
+       path: sh
        args:
        - -exec
        - |
