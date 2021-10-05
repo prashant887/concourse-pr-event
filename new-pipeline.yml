@@ -9,7 +9,7 @@ resource_types:
 resources:
 - name: concourse-pr-event
   type: pull-request
-  check_every: 1m
+  check_every: 10s
   source:
     repository: prashant887/concourse-pr-event
     access_token: ((github-access-token))
