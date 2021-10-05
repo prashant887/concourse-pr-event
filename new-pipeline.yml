@@ -1,0 +1,58 @@
+---
+resource_types:
+
+- name: pull-request
+  type: docker-image
+  source:
+    repository: teliaoss/github-pr-resource
+
+resources:
+- name: concourse-pr-event
+  type: pull-request
+  check_every: 1m
+  source:
+    repository: prashant887/concourse-pr-event
+    access_token: ((github-access-token))
+
+jobs:
+- name: compile-run-unittest
+  plan:
+  - get: concourse-pr-event
+    trigger: true
+    version: every
+  - put: concourse-pr-event
+    params:
+      path: concourse-pr-event
+      status: pending
+  - task: build
+    config:
+      platform: linux
+      image_resource:
+        type: docker-image
+        source:
+          repository: alpine
+          #tag: 3.6.3-jdk-11
+      inputs:
+      - name: concourse-pr-event
+      outputs:
+      - name: build_out
+      params:
+        branch: master
+      run:
+       path: bash
+       args:
+       - -exec
+       - |
+          sleep 20s
+  on_success:
+    do:
+    - put: concourse-pr-event
+      params:
+        path: concourse-pr-event
+        status: success
+  on_failure:
+    do:
+    - put: concourse-pr-event
+      params:
+        path: concourse-pr-event
+        status: failure
